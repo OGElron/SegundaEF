@@ -1,14 +1,23 @@
 import ContenedorFirebase from "../../contenedores/ContenedorFirebase.js"
 
 class CarritosDaoFirebase extends ContenedorFirebase {
+  constructor() {
+    super("carritos");
+  }
 
-    constructor() {
-        super('carritos')
-    }
+  async listarAll() {
+    const docs = await super.listarAll();
+    return docs.map((doc) => ({
+      id: doc.data().id,
+      title: doc.data().title,
+      productos: doc.data().productos,
+      date: doc.data().date,
+    }));
+  }
 
-    async guardar(carrito = { productos: [] }) {
-        return super.guardar(carrito)
-    }
+  async guardar(carrito) {
+    return super.guardar({ ...carrito, productos: [] });
+  }
 }
 
 export default CarritosDaoFirebase
